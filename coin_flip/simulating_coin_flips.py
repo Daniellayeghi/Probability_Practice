@@ -46,5 +46,56 @@ def evaluate_head_instances(number_of_flips: int):
     plt.show()
 
 
+def pair_coin_flip_interaction(states: list, number_of_coin_toss: int = 100, number_of_coins: int = 2):
+    """
+    Function aims to show the joint probability of multiple coins
+
+    Input
+    -----
+    - states: acceptable states either of the coins could be in
+    - number_of_coin_toss: number of tosses used to evaluate probability
+    - number of coins: coin sample size
+
+    Output
+    ------
+    joint probability of the N coins
+    """
+
+    if number_of_coins != len(states):
+        raise ValueError("Each coin should have an associative state!")
+
+    coin_states = [[] for _ in range(number_of_coins)]
+    coin_acc_state = [0 for _ in range(len(states))]
+
+    for coin in range(number_of_coins):
+        coin_states[coin] = core.flip_fair_coins(number_of_coin_toss)
+        for state in coin_states[coin]:
+            if state == states[coin]:
+                coin_acc_state[coin] += 1
+
+    final_prob = sum(coin_acc_state)
+
+    coin_equality = [True for _ in range(number_of_coins)]
+    for iteration in range(number_of_coin_toss):
+        for coin in range(number_of_coins):
+            coin_equality[coin] = coin_states[coin][iteration] == states[coin]
+
+        if all(coin_equalities for coin_equalities in coin_equality):
+            final_prob -= 1
+
+    return final_prob / number_of_coin_toss
+
+
 if __name__ == '__main__':
-    evaluate_head_instances(10000)
+    """
+    Testing evaluate_head_instances
+    """
+    evaluate_head_instances(1000)
+
+    """
+    Testing pair_coin_flip_interaction
+    """
+    number_of_coins = 3
+    specified_states = ["heads", "tails", "tails"]
+    probability = pair_coin_flip_interaction(specified_states, 100000, number_of_coins)
+    print("Joint probability of the {0} coins in the specified state is {1}".format(number_of_coins, probability))
