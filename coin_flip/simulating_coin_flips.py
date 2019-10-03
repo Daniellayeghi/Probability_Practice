@@ -95,7 +95,9 @@ if __name__ == '__main__':
     """
     Testing pair_coin_flip_interaction
     """
-    number_of_coins = 3
-    specified_states = ["heads", "tails", "tails"]
+    number_of_coins = 2
+    specified_states = ["heads", "tails"]
     probability = pair_coin_flip_interaction(specified_states, 100000, number_of_coins)
     print("Joint probability of the {0} coins in the specified state is {1}".format(number_of_coins, probability))
+
+
